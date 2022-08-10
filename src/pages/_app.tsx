@@ -2,11 +2,7 @@ import { Provider } from "react-redux";
 
 import type { AppProps } from "next/app";
 
-import {
-  unstable_createMuiStrictModeTheme as createTheme,
-  ThemeProvider,
-  useMediaQuery,
-} from "@mui/material";
+import { createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
 import { red as primary } from "@mui/material/colors";
 
 import store from "../app/store";
@@ -55,14 +51,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const matches = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <ThemeProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
           <Header />
           <Component {...pageProps} />
           {!matches && <Footer />}
-        </Provider>
-      </QueryClientProvider>
-    </ThemeProvider>
+        </ThemeProvider>
+      </Provider>
+    </QueryClientProvider>
   );
 }

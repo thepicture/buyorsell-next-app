@@ -18,7 +18,8 @@
     "paths": {
       "@components": ["components"],
       "@pages": ["pages"],
-      "@features": ["src/features"]
+      "@features": ["src/features"],
+      "@providers": ["providers"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

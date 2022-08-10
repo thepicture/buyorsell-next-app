@@ -14,13 +14,33 @@ import {
   useTheme,
 } from "@mui/material";
 
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 import { useProductImage } from "@features";
+import { auth } from "@providers";
 
 export const Auth = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [isSkeletonEnabled, setIsSkeletonEnabled] = useState(true);
-  const { isLoading, error, data } = useProductImage();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
+  const { isLoading, error, data } = useProductImage();
+
+  const handleClick = async () => {
+    try {
+      const credential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      alert(`You've signed in as ${credential.user.email}`);
+    } catch (error) {
+      alert("Incorrect email or password");
+    }
+  };
+
   return (
     <Card
       elevation={matches ? 0 : 8}
@@ -50,13 +70,21 @@ export const Auth = () => {
             <Typography component="h2" variant="h5">
               Sign In
             </Typography>
-            <TextField type="email" placeholder="Email" variant="standard" />
+            <TextField
+              type="email"
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="Email"
+              variant="standard"
+            />
             <TextField
               type="password"
+              onChange={(event) => setPassword(event.target.value)}
               placeholder="Password"
               variant="standard"
             />
-            <Button variant="contained">Sign In</Button>
+            <Button onClick={handleClick} variant="contained">
+              Sign In
+            </Button>
           </Stack>
         </Grid>
       </Grid>
