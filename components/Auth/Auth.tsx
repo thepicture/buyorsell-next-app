@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Image from "next/image";
 
 import {
-  Box,
   Button,
   Card,
   Grid,
@@ -18,6 +17,7 @@ import {
 import { useProductImage } from "@features";
 
 export const Auth = () => {
+  const [isSkeletonEnabled, setIsSkeletonEnabled] = useState(true);
   const { isLoading, error, data } = useProductImage();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
@@ -28,11 +28,22 @@ export const Auth = () => {
     >
       <Grid container>
         <Grid item md={6} sm={12} xs={12} position="relative">
-          {!isLoading && !error ? (
-            <Image src={data} alt="" layout="fill" objectFit="contain" />
-          ) : (
-            <Skeleton variant="rectangular" width={256} height={320} />
+          {!isLoading && !error && (
+            <Image
+              src={data}
+              alt=""
+              onLoadingComplete={() => setIsSkeletonEnabled(false)}
+              layout="fill"
+              priority
+              objectFit="contain"
+            />
           )}
+          <Skeleton
+            variant="rectangular"
+            width={256}
+            height="100%"
+            sx={{ display: isSkeletonEnabled ? "block" : "none" }}
+          />
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
           <Stack>

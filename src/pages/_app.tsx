@@ -2,7 +2,11 @@ import { Provider } from "react-redux";
 
 import type { AppProps } from "next/app";
 
-import { createTheme, ThemeProvider } from "@mui/material";
+import {
+  unstable_createMuiStrictModeTheme as createTheme,
+  ThemeProvider,
+  useMediaQuery,
+} from "@mui/material";
 import { red as primary } from "@mui/material/colors";
 
 import store from "../app/store";
@@ -32,19 +36,31 @@ const theme = createTheme({
         },
       },
     },
+    MuiCard: {
+      defaultProps: {
+        elevation: 0,
+      },
+      styleOverrides: {
+        root: {
+          transition: "none",
+        },
+      },
+    },
   },
 });
 
 const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const matches = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <Header />
           <Component {...pageProps} />
-          <Footer />
+          {!matches && <Footer />}
         </Provider>
       </QueryClientProvider>
     </ThemeProvider>
