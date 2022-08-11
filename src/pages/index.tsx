@@ -1,4 +1,4 @@
-import { createRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -15,15 +15,19 @@ import { useEffect } from "react";
 const CenteredMain = styled("main")(
   ({ fullScreen }: { fullScreen: boolean }) => ({
     width: "100%",
-    height: "90vh",
+    height: "100%",
     display: "flex",
     justifyContent: fullScreen ? "initial" : "center",
-    alignItems: "center",
+    alignItems: fullScreen ? "stretch" : "center",
   })
 );
 
 const AuthLayout = styled("div")(({ fullScreen }: { fullScreen: boolean }) => ({
-  width: fullScreen ? "100%" : "640px",
+  maxWidth: fullScreen ? "none" : "640px",
+  width: fullScreen ? "100vw" : "640px",
+  height: fullScreen ? "100%" : "inherit",
+  display: fullScreen ? "flex" : "inherit",
+  alignItems: fullScreen ? "center" : "inherit",
 }));
 
 const IndexPage: NextPage = () => {

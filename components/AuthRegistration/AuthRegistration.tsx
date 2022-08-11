@@ -81,7 +81,7 @@ export const AuthRegistration = () => {
   return (
     <Card
       elevation={matches ? 0 : 8}
-      sx={{ padding: 4, borderRadius: matches ? 0 : 6 }}
+      sx={{ padding: 4, borderRadius: matches ? 0 : 6, width: "100%" }}
     >
       <Grid container>
         <Grid item md={6} sm={12} xs={12} position="relative">
