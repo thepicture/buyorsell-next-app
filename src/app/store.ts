@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
-import counterReducer from "../features/counter/counterSlice";
+import { counterReducer } from "@features";
 
 export function makeStore() {
   return configureStore({
@@ -8,7 +8,7 @@ export function makeStore() {
   });
 }
 
-const store = makeStore();
+export const store = makeStore();
 
 export type AppState = ReturnType<typeof store.getState>;
 
@@ -20,5 +20,3 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-
-export default store;

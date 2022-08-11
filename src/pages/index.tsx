@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import styled from "@emotion/styled";
 
 import { Auth } from "@components";
 

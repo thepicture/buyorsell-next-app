@@ -19,7 +19,9 @@
       "@components": ["components"],
       "@pages": ["pages"],
       "@features": ["src/features"],
-      "@providers": ["providers"]
+      "@providers": ["providers"],
+      "@styles": ["src/styles"],
+      "@store": ["src/app"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
