@@ -14,30 +14,63 @@ import {
   useTheme,
 } from "@mui/material";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 import { useProductImage } from "@features";
 import { auth } from "@providers";
+import { FirebaseError } from "firebase/app";
 
 export const Auth = () => {
+  const [isRegistrationMode, setIsRegistrationMode] = useState(false);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
 
   const [isSkeletonEnabled, setIsSkeletonEnabled] = useState(true);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const { isLoading, error, data } = useProductImage();
 
+  class PasswordError extends Error {}
+
   const handleClick = async () => {
-    try {
-      const credential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      alert(`You've signed in as ${credential.user.email}`);
-    } catch (error) {
-      alert("Incorrect email or password");
+    if (isRegistrationMode) {
+      try {
+        if (!password || !repeatPassword) {
+          throw new PasswordError("Password is required");
+        }
+
+        if (password !== repeatPassword) {
+          throw new PasswordError("Passwords must match");
+        }
+
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert(`You've created your account`);
+        setEmail("");
+        setPassword("");
+        setIsRegistrationMode((prev) => !prev);
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          alert(error.message.split("Firebase: ")[1].split("(")[0]);
+        } else if (error instanceof PasswordError) {
+          alert(error.message);
+        }
+      }
+    } else {
+      try {
+        const credential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        alert(`You've signed in as ${credential.user.email}`);
+      } catch (error) {
+        alert("Incorrect email or password");
+      }
     }
   };
 
@@ -72,18 +105,40 @@ export const Auth = () => {
             </Typography>
             <TextField
               type="email"
+              value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="Email"
               variant="standard"
             />
             <TextField
               type="password"
+              value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="Password"
               variant="standard"
             />
+            {isRegistrationMode && (
+              <TextField
+                type="password"
+                value={repeatPassword}
+                onChange={(event) => setRepeatPassword(event.target.value)}
+                placeholder="Repeat password"
+                variant="standard"
+              />
+            )}
             <Button onClick={handleClick} variant="contained">
-              Sign In
+              {isRegistrationMode ? "Sign Up" : "SignIn"}
+            </Button>
+            <Button
+              onClick={() => {
+                setEmail("");
+                setPassword("");
+                setRepeatPassword("");
+                return setIsRegistrationMode((prev) => !prev);
+              }}
+              variant="outlined"
+            >
+              {isRegistrationMode ? "I have an account" : "Create account"}
             </Button>
           </Stack>
         </Grid>
