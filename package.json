@@ -17,7 +17,8 @@
     "next": "latest",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-redux": "^7.2.0"
+    "react-redux": "^7.2.0",
+    "vanta": "^0.5.22"
   },
   "devDependencies": {
     "@testing-library/react": "^12.1.0",

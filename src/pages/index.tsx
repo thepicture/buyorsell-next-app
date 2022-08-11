@@ -1,3 +1,5 @@
+import { createRef, useRef, useState } from "react";
+
 import type { NextPage } from "next";
 import Head from "next/head";
 
@@ -5,7 +7,10 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material";
 import styled from "@emotion/styled";
 
+import FOG from "vanta/dist/vanta.fog.min";
+
 import { Auth } from "@components";
+import { useEffect } from "react";
 
 const CenteredMain = styled("main")(
   ({ fullScreen }: { fullScreen: boolean }) => ({
@@ -22,11 +27,40 @@ const AuthLayout = styled("div")(({ fullScreen }: { fullScreen: boolean }) => ({
 }));
 
 const IndexPage: NextPage = () => {
+  const [vantaEffect, setVantaEffect] = useState<any>(0);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
 
+  const vantaRef = useRef(null);
+
+  useEffect(() => {
+    if (!vantaEffect) {
+      setVantaEffect(
+        FOG({
+          el: vantaRef.current,
+          mouseControls: false,
+          touchControls: false,
+          gyroControls: false,
+          minHeight: 200.0,
+          minWidth: 200.0,
+          highlightColor: 0xf44336,
+          midtoneColor: 0x3f44336,
+          lowlightColor: 0xf44336,
+          blurFactor: 0.5,
+          speed: 0.0,
+          zoom: 0.2,
+        })
+      );
+    }
+    return () => {
+      if (vantaEffect) {
+        vantaEffect.destroy();
+      }
+    };
+  }, []);
+
   return (
-    <>
+    <div ref={vantaRef}>
       <Head>
         <title>BuyOrSell Online Shop</title>
         <meta
@@ -36,13 +70,14 @@ const IndexPage: NextPage = () => {
         <meta name="keywords" content="ecommerce,buy,sell" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" />
       </Head>
       <CenteredMain fullScreen={matches}>
         <AuthLayout fullScreen={matches}>
           <Auth />
         </AuthLayout>
       </CenteredMain>
-    </>
+    </div>
   );
 };
 
