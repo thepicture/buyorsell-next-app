@@ -22,6 +22,7 @@ import {
 import { useProductImage } from "@features";
 import { auth } from "@providers";
 import { FirebaseError } from "firebase/app";
+import { useNotify } from "@hooks";
 
 export const AuthRegistration = () => {
   const [isRegistrationMode, setIsRegistrationMode] = useState(false);
@@ -34,6 +35,7 @@ export const AuthRegistration = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const { isLoading, error, data } = useProductImage();
+  const { notify, NotifyBar } = useNotify();
 
   class PasswordError extends Error {}
 
@@ -53,15 +55,15 @@ export const AuthRegistration = () => {
         }
 
         await createUserWithEmailAndPassword(auth, email, password);
-        alert(`You've created your account`);
+        notify(`You've created your account`);
         setEmail("");
         setPassword("");
         setIsRegistrationMode((prev) => !prev);
       } catch (error) {
         if (error instanceof FirebaseError) {
-          alert(error.message.split("Firebase: ")[1].split("(")[0]);
+          notify(error.message.split("Firebase: ")[1].split("(")[0]);
         } else if (error instanceof PasswordError) {
-          alert(error.message);
+          notify(error.message);
         }
       }
     } else {
@@ -71,9 +73,9 @@ export const AuthRegistration = () => {
           email,
           password
         );
-        alert(`You've signed in as ${credential.user.email}`);
+        notify(`You've signed in as ${credential.user.email}`);
       } catch (error) {
-        alert("Incorrect email or password");
+        notify("Incorrect email or password");
       }
     }
   };
@@ -83,6 +85,7 @@ export const AuthRegistration = () => {
       elevation={matches ? 0 : 8}
       sx={{ padding: 4, borderRadius: matches ? 0 : 6, width: "100%" }}
     >
+      <NotifyBar />
       <Grid container>
         <Grid item md={6} sm={12} xs={12} position="relative">
           {!isLoading && !error && (

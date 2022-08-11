@@ -21,7 +21,8 @@
       "@features": ["src/features"],
       "@providers": ["providers"],
       "@styles": ["src/styles"],
-      "@store": ["src/app"]
+      "@store": ["src/app"],
+      "@hooks": ["hooks"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
