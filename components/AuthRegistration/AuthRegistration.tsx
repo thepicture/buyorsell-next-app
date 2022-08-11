@@ -23,7 +23,7 @@ import { useProductImage } from "@features";
 import { auth } from "@providers";
 import { FirebaseError } from "firebase/app";
 
-export const Auth = () => {
+export const AuthRegistration = () => {
   const [isRegistrationMode, setIsRegistrationMode] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -40,6 +40,10 @@ export const Auth = () => {
   const handleClick = async () => {
     if (isRegistrationMode) {
       try {
+        if (!email) {
+          throw new PasswordError("Email is required");
+        }
+
         if (!password || !repeatPassword) {
           throw new PasswordError("Password is required");
         }
@@ -101,7 +105,7 @@ export const Auth = () => {
         <Grid item md={6} sm={12} xs={12}>
           <Stack>
             <Typography component="h2" variant="h5">
-              Sign In
+              {isRegistrationMode ? "Sign Up" : "Sign In"}
             </Typography>
             <TextField
               type="email"
@@ -117,15 +121,20 @@ export const Auth = () => {
               placeholder="Password"
               variant="standard"
             />
-            {isRegistrationMode && (
-              <TextField
-                type="password"
-                value={repeatPassword}
-                onChange={(event) => setRepeatPassword(event.target.value)}
-                placeholder="Repeat password"
-                variant="standard"
-              />
-            )}
+            <TextField
+              type="password"
+              value={repeatPassword}
+              onChange={(event) => setRepeatPassword(event.target.value)}
+              placeholder="Repeat password"
+              variant="standard"
+              sx={
+                matches
+                  ? isRegistrationMode
+                    ? {}
+                    : { display: "none" }
+                  : { visibility: isRegistrationMode ? "visible" : "hidden" }
+              }
+            />
             <Button onClick={handleClick} variant="contained">
               {isRegistrationMode ? "Sign Up" : "SignIn"}
             </Button>

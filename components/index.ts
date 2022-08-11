@@ -1,3 +1,3 @@
 export * from "./Header";
 export * from "./Footer";
-export * from "./Auth";
+export * from "./AuthRegistration";

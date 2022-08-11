@@ -9,7 +9,7 @@ import styled from "@emotion/styled";
 
 import FOG from "vanta/dist/vanta.fog.min";
 
-import { Auth } from "@components";
+import { AuthRegistration } from "@components";
 import { useEffect } from "react";
 
 const CenteredMain = styled("main")(
@@ -74,7 +74,7 @@ const IndexPage: NextPage = () => {
       </Head>
       <CenteredMain fullScreen={matches}>
         <AuthLayout fullScreen={matches}>
-          <Auth />
+          <AuthRegistration />
         </AuthLayout>
       </CenteredMain>
     </div>
