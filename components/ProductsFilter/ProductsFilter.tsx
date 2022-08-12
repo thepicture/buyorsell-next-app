@@ -6,6 +6,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
   Typography,
 } from "@mui/material";
 
@@ -13,12 +14,14 @@ export interface ProductsFilterProps {
   categories: string[];
   onSortChange: (sort: string) => void;
   onCategoryChange: (category: string) => void;
+  onSearchStringChange: (searchString: string) => void;
 }
 
 export const ProductsFilter: React.FC<ProductsFilterProps> = ({
   categories,
   onCategoryChange,
   onSortChange,
+  onSearchStringChange,
 }) => {
   return (
     <Card
@@ -32,6 +35,9 @@ export const ProductsFilter: React.FC<ProductsFilterProps> = ({
         height: "100vh",
       }}
     >
+      <Typography component="h2" variant="h5" mb={2}>
+        Filters
+      </Typography>
       {categories ? (
         <>
           <FormControl fullWidth sx={{ marginBottom: 2 }}>
@@ -65,6 +71,13 @@ export const ProductsFilter: React.FC<ProductsFilterProps> = ({
               <MenuItem value="asc">Ascending</MenuItem>
               <MenuItem value="desc">Descending</MenuItem>
             </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              type="text"
+              onChange={(event) => onSearchStringChange(event.target.value)}
+              placeholder="Search..."
+            />
           </FormControl>
         </>
       ) : (

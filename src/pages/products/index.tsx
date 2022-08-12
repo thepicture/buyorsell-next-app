@@ -30,6 +30,7 @@ const IndexPage: NextPage = () => {
   } = useCategoriesQuery();
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
+  const [title, setTitle] = useState("");
 
   const handleSortChange = (sort: string) => {
     setSort(sort);
@@ -38,10 +39,16 @@ const IndexPage: NextPage = () => {
     setCategory(category);
   };
 
+  const handleSearchStringChange = (searchString: string) => {
+    setTitle(searchString.trim().toLowerCase());
+  };
+
   const filteredProducts = products
     ?.filter(
-      (p) => category === "all" || category === "" || p.category === category
+      (product) =>
+        category === "all" || category === "" || product.category === category
     )
+    .filter((product) => !title || product.title.toLowerCase().includes(title))
     .sort((first, second) =>
       sort === "asc"
         ? first.title > second.title
@@ -64,6 +71,7 @@ const IndexPage: NextPage = () => {
           onSortChange={handleSortChange}
           categories={categories ?? []}
           onCategoryChange={handleCategoryChange}
+          onSearchStringChange={handleSearchStringChange}
         />
         {areProductsLoading || productsError ? (
           <Typography>Loading...</Typography>
