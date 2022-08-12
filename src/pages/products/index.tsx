@@ -9,11 +9,16 @@ import { Typography } from "@mui/material";
 
 import { useCategoriesQuery, useProductsQuery } from "@features";
 import { ProductList, ProductsFilter } from "@components";
+import { theme } from "@styles";
 
 const Container = styled("main")(() => ({
   display: "grid",
   gridTemplateColumns: "1fr 2fr",
   margin: 16,
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "auto 1fr",
+  },
 }));
 
 const IndexPage: NextPage = () => {

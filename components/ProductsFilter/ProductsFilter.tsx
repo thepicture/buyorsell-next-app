@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { theme } from "@styles";
 
 export interface ProductsFilterProps {
   categories: string[];
@@ -33,6 +34,11 @@ export const ProductsFilter: React.FC<ProductsFilterProps> = ({
         marginRight: 2,
         padding: 2,
         height: "100vh",
+        zIndex: 1,
+        [theme.breakpoints.down("md")]: {
+          height: "auto",
+          marginRight: 0,
+        },
       }}
     >
       <Typography component="h2" variant="h5" mb={2}>
