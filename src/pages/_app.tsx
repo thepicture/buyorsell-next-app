@@ -1,8 +1,11 @@
 import { Provider } from "react-redux";
 
 import type { AppProps } from "next/app";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
 import { ThemeProvider } from "@mui/material";
+import styled from "@emotion/styled";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -10,18 +13,19 @@ import { store } from "@store";
 import { style } from "@styles";
 import { Footer, Header } from "@components";
 import { theme } from "@styles";
-import styled from "@emotion/styled";
-import Head from "next/head";
 
 const queryClient = new QueryClient();
 
-const Grid = styled("div")(() => ({
-  height: "100vh",
-  display: "grid",
-  gridTemplateRows: "64px 1fr 64px",
-}));
+const Grid = styled("div")(
+  ({ isStickyHeader }: { isStickyHeader: boolean }) => ({
+    height: isStickyHeader ? "100%" : "100vh",
+    display: "grid",
+    gridTemplateRows: "64px 1fr 64px",
+  })
+);
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -32,7 +36,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <Grid>
+            <Grid isStickyHeader={router.pathname != "/"}>
               <Header />
               <Component {...pageProps} />
               {<Footer />}

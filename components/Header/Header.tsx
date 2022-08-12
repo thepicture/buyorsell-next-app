@@ -27,7 +27,7 @@ export const Header = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <ShopIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />

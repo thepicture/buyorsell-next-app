@@ -40,6 +40,7 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
             <Image
               src={product.image}
               alt={product.title}
+              priority={index === 0}
               layout="fill"
               objectFit="contain"
             />

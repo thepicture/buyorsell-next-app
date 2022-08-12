@@ -13,7 +13,7 @@ import { theme } from "@styles";
 
 const Container = styled("main")(() => ({
   display: "grid",
-  gridTemplateColumns: "1fr 2fr",
+  gridTemplateColumns: "1fr 4fr",
   margin: 16,
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",

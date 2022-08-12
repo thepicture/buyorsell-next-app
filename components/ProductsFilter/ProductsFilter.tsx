@@ -29,7 +29,7 @@ export const ProductsFilter: React.FC<ProductsFilterProps> = ({
       elevation={4}
       sx={{
         position: "sticky",
-        top: "16px",
+        top: "80px",
         marginRight: 2,
         padding: 2,
         height: "100vh",
@@ -50,15 +50,18 @@ export const ProductsFilter: React.FC<ProductsFilterProps> = ({
             <Select
               labelId="category-select-label"
               id="category-select-label"
+              defaultValue="all"
               onChange={(event) =>
                 onCategoryChange(event.target.value as string)
               }
               label="Category"
             >
               {[
-                <MenuItem value="all">All</MenuItem>,
+                <MenuItem key="all" value="all">
+                  All
+                </MenuItem>,
                 ...categories.map((category) => (
-                  <MenuItem value={category}>
+                  <MenuItem key={category} value={category}>
                     {category[0].toUpperCase() + category.substring(1)}
                   </MenuItem>
                 )),
@@ -70,6 +73,7 @@ export const ProductsFilter: React.FC<ProductsFilterProps> = ({
             <Select
               labelId="sort-select-label"
               id="sort-select-label"
+              defaultValue="desc"
               onChange={(event) => onSortChange(event.target.value as any)}
               label="Sort"
             >
