@@ -14,7 +14,9 @@ interface ProductListProps {
 const FlexContainer = styled("section")(() => ({
   display: "grid",
   gridTemplateColumns: "1fr 1fr 1fr",
+  gap: 16,
   height: "100%",
+  margin: "16px 0 90px",
 }));
 
 export const ProductList: React.FC<ProductListProps> = ({ products }) => {
@@ -32,7 +34,6 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
             gridTemplateRows: "1fr 1fr",
             transition: "all 100ms ease-in-out",
             cursor: "pointer",
-            margin: `0 0 1em 1em}`,
           }}
         >
           <div style={{ position: "relative" }}>
@@ -66,7 +67,7 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
             <Typography component="p" fontWeight="bold">
               {product.price}$
             </Typography>
-            <Chip label={product.title} color="primary" variant="outlined" />
+            <Chip label={product.category} color="primary" variant="outlined" />
             <Typography sx={{ overflow: "hidden" }}>
               {product.description}
             </Typography>
