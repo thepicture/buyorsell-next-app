@@ -18,6 +18,7 @@ const Container = styled("main")(() => ({
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     gridTemplateRows: "auto 1fr",
+    rowGap: 16,
   },
 }));
 
@@ -29,8 +30,8 @@ const IndexPage: NextPage = () => {
   } = useProductsQuery();
 
   const {
-    isLoading: areCategoriesLoading,
-    error: categoriesError,
+    isLoading: _areCategoriesLoading,
+    error: _categoriesError,
     data: categories,
   } = useCategoriesQuery();
   const [category, setCategory] = useState("");
@@ -81,7 +82,7 @@ const IndexPage: NextPage = () => {
         {areProductsLoading || productsError ? (
           <Typography>Loading...</Typography>
         ) : (
-          <ProductList products={filteredProducts} />
+          <ProductList products={filteredProducts || []} />
         )}
       </Container>
     </>

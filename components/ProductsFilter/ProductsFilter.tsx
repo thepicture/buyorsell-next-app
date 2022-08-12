@@ -30,7 +30,6 @@ export const ProductsFilter: React.FC<ProductsFilterProps> = ({
       sx={{
         position: "sticky",
         top: "16px",
-        marginTop: 2,
         marginRight: 2,
         padding: 2,
         height: "100vh",

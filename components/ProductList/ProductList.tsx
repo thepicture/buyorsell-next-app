@@ -14,15 +14,14 @@ interface ProductListProps {
 const FlexContainer = styled("section")(() => ({
   display: "grid",
   gridTemplateColumns: "1fr 1fr 1fr",
-  gap: 16,
+  columnGap: 16,
   height: "100%",
-  margin: "16px 0 90px",
 }));
 
 export const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
     <FlexContainer>
-      {products.map((product) => (
+      {products.map((product, index) => (
         <Card
           key={product.id}
           elevation={4}
@@ -34,6 +33,7 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
             gridTemplateRows: "1fr 1fr",
             transition: "all 100ms ease-in-out",
             cursor: "pointer",
+            marginBottom: products.length - index < 3 ? 0 : "16px",
           }}
         >
           <div style={{ position: "relative" }}>
