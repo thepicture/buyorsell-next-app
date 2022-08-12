@@ -11,6 +11,7 @@ import { style } from "@styles";
 import { Footer, Header } from "@components";
 import { theme } from "@styles";
 import styled from "@emotion/styled";
+import Head from "next/head";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,10 @@ const Grid = styled("div")(() => ({
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       {style}
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>

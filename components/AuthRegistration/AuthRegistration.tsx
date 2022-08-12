@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import {
   Button,
@@ -18,11 +19,13 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-
-import { useProductImage } from "@features";
-import { auth } from "@providers";
 import { FirebaseError } from "firebase/app";
+
+import { useProductImageQuery } from "@features";
+import { auth } from "@providers";
 import { useNotify } from "@hooks";
+
+class PasswordError extends Error {}
 
 export const AuthRegistration = () => {
   const [isRegistrationMode, setIsRegistrationMode] = useState(false);
@@ -32,12 +35,14 @@ export const AuthRegistration = () => {
   const [repeatPassword, setRepeatPassword] = useState("");
 
   const [isSkeletonEnabled, setIsSkeletonEnabled] = useState(true);
+
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
-  const { isLoading, error, data } = useProductImage();
+
+  const { isLoading, error, data } = useProductImageQuery();
   const { notify, NotifyBar } = useNotify();
 
-  class PasswordError extends Error {}
+  const router = useRouter();
 
   const handleClick = async () => {
     if (isRegistrationMode) {
@@ -74,6 +79,7 @@ export const AuthRegistration = () => {
           password
         );
         notify(`You've signed in as ${credential.user.email}`);
+        router.replace("/products");
       } catch (error) {
         notify("Incorrect email or password");
       }
