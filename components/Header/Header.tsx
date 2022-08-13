@@ -8,12 +8,21 @@ import {
   Box,
   IconButton,
   Menu,
+  MenuItem,
+  Button,
 } from "@mui/material";
 
 import ShopIcon from "@mui/icons-material/Shop";
 import MenuIcon from "@mui/icons-material/Menu";
+import { signOut } from "firebase/auth";
+import { auth } from "@providers";
+import { useRouter } from "next/router";
+import { useNotify } from "@hooks";
 
 export const Header = () => {
+  const router = useRouter();
+  const { notify, NotifyBar } = useNotify();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -26,8 +35,19 @@ export const Header = () => {
     setAnchorElNav(null);
   };
 
+  const handleLogOut = async () => {
+    try {
+      await signOut(auth);
+      router.replace("/");
+      notify("You successfully have logged out!");
+    } catch (error) {
+      notify("Can't log out, try again");
+    }
+  };
+
   return (
     <AppBar position="sticky">
+      <NotifyBar />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <ShopIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -77,7 +97,11 @@ export const Header = () => {
               sx={{
                 display: { xs: "block", md: "none" },
               }}
-            ></Menu>
+            >
+              {router.pathname !== "/" && (
+                <MenuItem onClick={handleLogOut}>Log out</MenuItem>
+              )}
+            </Menu>
           </Box>
           <ShopIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
@@ -98,7 +122,19 @@ export const Header = () => {
           >
             BuyOrSell
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+            }}
+          >
+            {router.pathname !== "/" && (
+              <Button onClick={handleLogOut} color="inherit">
+                Log out
+              </Button>
+            )}
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
