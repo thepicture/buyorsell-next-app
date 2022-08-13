@@ -27,6 +27,8 @@ const Grid = styled("div")(
     height: isStickyHeader ? "100%" : "100vh",
     display: "grid",
     gridTemplateRows: "64px 1fr 64px",
+    position: "relative",
+    minHeight: "100vh",
   })
 );
 

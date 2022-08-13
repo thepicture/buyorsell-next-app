@@ -2,16 +2,27 @@ import React from "react";
 
 import { Typography } from "@mui/material";
 
-import styles from "./Footer.module.css";
-
 export const Footer = () => {
   return (
-    <footer className={styles.footer}>
+    <footer className="footer">
       <ul>
         <li>
           <Typography>&copy; BuyOrSell</Typography>
         </li>
       </ul>
+      <style jsx>
+        {`
+          .footer {
+            height: 64px;
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+            width: 100%;
+            color: white;
+            background: #111;
+          }
+        `}
+      </style>
     </footer>
   );
 };
