@@ -22,8 +22,8 @@ import {
 import { FirebaseError } from "firebase/app";
 
 import { useProductImageQuery } from "@features";
-import { auth } from "@providers";
 import { useNotify } from "@hooks";
+import { auth } from "@providers";
 
 class PasswordError extends Error {}
 
@@ -64,6 +64,7 @@ export const AuthRegistration = () => {
         setEmail("");
         setPassword("");
         setIsRegistrationMode((prev) => !prev);
+        router.replace("/products");
       } catch (error) {
         if (error instanceof FirebaseError) {
           notify(error.message.split("Firebase: ")[1].split("(")[0]);

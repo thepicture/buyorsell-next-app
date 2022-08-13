@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { Provider } from "react-redux";
 
 import type { AppProps } from "next/app";
@@ -13,6 +15,7 @@ import { store } from "@store";
 import { style } from "@styles";
 import { Footer, Header } from "@components";
 import { theme } from "@styles";
+import { auth } from "@providers";
 
 const queryClient = new QueryClient();
 
@@ -26,11 +29,22 @@ const Grid = styled("div")(
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      console.log(user);
+      if (!user && router.pathname !== "/") {
+        router.push("/");
+      }
+    });
+  }, []);
+
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" />
       </Head>
       {style}
       <ThemeProvider theme={theme}>

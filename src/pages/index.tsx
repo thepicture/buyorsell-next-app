@@ -72,7 +72,6 @@ const IndexPage: NextPage = () => {
           content="BuyOrSell is an e-commerce shop for buying or selling just anything one wants to"
         />
         <meta name="keywords" content="ecommerce,buy,sell" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" />
       </Head>
       <CenteredMain fullScreen={matches}>
         <AuthLayout fullScreen={matches}>
