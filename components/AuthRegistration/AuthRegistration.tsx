@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -22,8 +22,8 @@ import {
 import { FirebaseError } from "firebase/app";
 
 import { useProductImageQuery } from "@features";
-import { useNotify } from "@hooks";
 import { auth } from "@providers";
+import { NotifyContext } from "@contexts";
 
 class PasswordError extends Error {}
 
@@ -40,7 +40,7 @@ export const AuthRegistration = () => {
   const matches = useMediaQuery(theme.breakpoints.down("md"));
 
   const { isLoading, error, data } = useProductImageQuery();
-  const { notify, NotifyBar } = useNotify();
+  const notify = useContext(NotifyContext);
 
   const router = useRouter();
 
@@ -60,11 +60,11 @@ export const AuthRegistration = () => {
         }
 
         await createUserWithEmailAndPassword(auth, email, password);
-        notify(`You've created your account`);
         setEmail("");
         setPassword("");
         setIsRegistrationMode((prev) => !prev);
         router.replace("/products");
+        notify(`You've created your account`);
       } catch (error) {
         if (error instanceof FirebaseError) {
           notify(error.message.split("Firebase: ")[1].split("(")[0]);
@@ -79,8 +79,8 @@ export const AuthRegistration = () => {
           email,
           password
         );
-        notify(`You've signed in as ${credential.user.email}`);
         router.replace("/products");
+        notify(`You've signed in as ${credential.user.email}`);
       } catch (error) {
         notify("Incorrect email or password");
       }
@@ -92,7 +92,6 @@ export const AuthRegistration = () => {
       elevation={matches ? 0 : 8}
       sx={{ padding: 4, borderRadius: matches ? 0 : 6, width: "100%" }}
     >
-      <NotifyBar />
       <Grid container>
         <Grid item md={6} sm={12} xs={12} position="relative">
           {!isLoading && !error && (

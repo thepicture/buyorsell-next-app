@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import { useRouter } from "next/router";
 
 import {
   AppBar,
@@ -14,14 +16,15 @@ import {
 
 import ShopIcon from "@mui/icons-material/Shop";
 import MenuIcon from "@mui/icons-material/Menu";
+
 import { signOut } from "firebase/auth";
+
 import { auth } from "@providers";
-import { useRouter } from "next/router";
-import { useNotify } from "@hooks";
+import { NotifyContext } from "@contexts";
 
 export const Header = () => {
   const router = useRouter();
-  const { notify, NotifyBar } = useNotify();
+  const notify = useContext(NotifyContext);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -47,7 +50,6 @@ export const Header = () => {
 
   return (
     <AppBar position="sticky">
-      <NotifyBar />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <ShopIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />

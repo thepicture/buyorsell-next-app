@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { Provider } from "react-redux";
 
@@ -16,6 +16,8 @@ import { style } from "@styles";
 import { Footer, Header } from "@components";
 import { theme } from "@styles";
 import { auth } from "@providers";
+import { NotifyContext } from "@contexts";
+import { useNotify } from "@hooks";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,7 @@ const Grid = styled("div")(
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const { notify, NotifyBar } = useNotify();
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -50,11 +53,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <Grid isStickyHeader={router.pathname != "/"}>
-              <Header />
-              <Component {...pageProps} />
-              {<Footer />}
-            </Grid>
+            <NotifyContext.Provider value={notify}>
+              <Grid isStickyHeader={router.pathname !== "/"}>
+                <NotifyBar />
+                <Header />
+                <Component {...pageProps} />
+                {<Footer />}
+              </Grid>
+            </NotifyContext.Provider>
           </Provider>
         </QueryClientProvider>
       </ThemeProvider>

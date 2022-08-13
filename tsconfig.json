@@ -22,7 +22,8 @@
       "@providers": ["providers"],
       "@styles": ["src/styles"],
       "@store": ["src/app"],
-      "@hooks": ["hooks"]
+      "@hooks": ["hooks"],
+      "@contexts": ["contexts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
