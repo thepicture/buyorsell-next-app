@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { debugErrorMap, initializeAuth } from "firebase/auth";
+import {
+  connectAuthEmulator,
+  debugErrorMap,
+  indexedDBLocalPersistence,
+  initializeAuth,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -12,7 +17,13 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 const app = initializeApp(firebaseConfig);
-const auth = initializeAuth(app, { errorMap: debugErrorMap });
+const auth = initializeAuth(app, {
+  errorMap: debugErrorMap,
+  persistence: indexedDBLocalPersistence,
+});
+if (process.env.NODE_ENV === "development") {
+  connectAuthEmulator(auth, process.env.NEXT_PUBLIC_LOCALHOST!);
+}
 let analytics;
 if (typeof window !== "undefined") {
   analytics = getAnalytics(app);

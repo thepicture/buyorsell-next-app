@@ -18,6 +18,7 @@ import { theme } from "@styles";
 import { auth } from "@providers";
 import { NotifyContext } from "@contexts";
 import { useNotify } from "@hooks";
+import { getAuth } from "firebase/auth";
 
 const queryClient = new QueryClient();
 
@@ -34,13 +35,18 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const { notify, NotifyBar } = useNotify();
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      console.log(user);
-      if (!user && router.pathname !== "/") {
-        router.push("/");
+    getAuth().onAuthStateChanged((user) => {
+      if (user) {
+        if (router.pathname === "/") {
+          router.replace("/products");
+        }
+      } else {
+        if (router.pathname !== "/") {
+          router.push("/");
+        }
       }
     });
-  }, []);
+  }, [auth]);
 
   return (
     <>
