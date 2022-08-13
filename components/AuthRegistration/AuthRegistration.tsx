@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -44,7 +44,8 @@ export const AuthRegistration = () => {
 
   const router = useRouter();
 
-  const handleClick = async () => {
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
     if (isRegistrationMode) {
       try {
         if (!email) {
@@ -112,53 +113,55 @@ export const AuthRegistration = () => {
           />
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
-          <Stack>
-            <Typography component="h2" variant="h5">
-              {isRegistrationMode ? "Sign Up" : "Sign In"}
-            </Typography>
-            <TextField
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="Email"
-              variant="standard"
-            />
-            <TextField
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Password"
-              variant="standard"
-            />
-            <TextField
-              type="password"
-              value={repeatPassword}
-              onChange={(event) => setRepeatPassword(event.target.value)}
-              placeholder="Repeat password"
-              variant="standard"
-              sx={
-                matches
-                  ? isRegistrationMode
-                    ? {}
-                    : { display: "none" }
-                  : { visibility: isRegistrationMode ? "visible" : "hidden" }
-              }
-            />
-            <Button onClick={handleClick} variant="contained">
-              {isRegistrationMode ? "Sign Up" : "SignIn"}
-            </Button>
-            <Button
-              onClick={() => {
-                setEmail("");
-                setPassword("");
-                setRepeatPassword("");
-                return setIsRegistrationMode((prev) => !prev);
-              }}
-              variant="outlined"
-            >
-              {isRegistrationMode ? "I have an account" : "Create account"}
-            </Button>
-          </Stack>
+          <form onSubmit={handleSubmit}>
+            <Stack>
+              <Typography component="h2" variant="h5">
+                {isRegistrationMode ? "Sign Up" : "Sign In"}
+              </Typography>
+              <TextField
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="Email"
+                variant="standard"
+              />
+              <TextField
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Password"
+                variant="standard"
+              />
+              <TextField
+                type="password"
+                value={repeatPassword}
+                onChange={(event) => setRepeatPassword(event.target.value)}
+                placeholder="Repeat password"
+                variant="standard"
+                sx={
+                  matches
+                    ? isRegistrationMode
+                      ? {}
+                      : { display: "none" }
+                    : { visibility: isRegistrationMode ? "visible" : "hidden" }
+                }
+              />
+              <Button type="submit" variant="contained">
+                {isRegistrationMode ? "Sign Up" : "SignIn"}
+              </Button>
+              <Button
+                onClick={() => {
+                  setEmail("");
+                  setPassword("");
+                  setRepeatPassword("");
+                  return setIsRegistrationMode((prev) => !prev);
+                }}
+                variant="outlined"
+              >
+                {isRegistrationMode ? "I have an account" : "Create account"}
+              </Button>
+            </Stack>
+          </form>
         </Grid>
       </Grid>
     </Card>
