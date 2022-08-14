@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 
 import { Product } from "@features";
 import { Card, Chip, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 interface ProductListProps {
   products: Product[];
@@ -23,11 +24,13 @@ export const ProductList: React.FC<ProductListProps> = ({
   products,
   onCategoryClick,
 }) => {
+  const router = useRouter();
   return (
     <FlexContainer>
       {products.map((product, index) => (
         <Card
           key={product.id}
+          onClick={() => router.push(`/products/${product.id}`)}
           elevation={4}
           component="section"
           sx={{
@@ -78,7 +81,10 @@ export const ProductList: React.FC<ProductListProps> = ({
             <Chip
               clickable
               title={`Select ${product.category} as filter category`}
-              onClick={() => onCategoryClick(product.category)}
+              onClick={(event) => {
+                event.stopPropagation();
+                onCategoryClick(product.category);
+              }}
               label={product.category}
               color="primary"
               variant="outlined"
