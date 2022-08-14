@@ -38,6 +38,9 @@ export const ProductList: React.FC<ProductListProps> = ({
             transition: "all 100ms ease-in-out",
             cursor: "pointer",
             marginBottom: products.length - index < 3 ? 0 : "16px",
+            "&:hover": {
+              transform: "scale(1.01)",
+            },
           }}
         >
           <div style={{ position: "relative" }}>
@@ -74,6 +77,7 @@ export const ProductList: React.FC<ProductListProps> = ({
             </Typography>
             <Chip
               clickable
+              title={`Select ${product.category} as filter category`}
               onClick={() => onCategoryClick(product.category)}
               label={product.category}
               color="primary"
