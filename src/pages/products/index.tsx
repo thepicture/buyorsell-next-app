@@ -34,7 +34,7 @@ const IndexPage: NextPage = () => {
     error: _categoriesError,
     data: categories = [],
   } = useCategoriesQuery();
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("");
   const [title, setTitle] = useState("");
 
@@ -76,13 +76,17 @@ const IndexPage: NextPage = () => {
         <ProductsFilter
           onSortChange={handleSortChange}
           categories={categories}
+          category={category}
           onCategoryChange={handleCategoryChange}
           onSearchStringChange={handleSearchStringChange}
         />
         {areProductsLoading || productsError ? (
           <Typography>Loading...</Typography>
         ) : (
-          <ProductList products={filteredProducts} />
+          <ProductList
+            products={filteredProducts}
+            onCategoryClick={handleCategoryChange}
+          />
         )}
       </Container>
     </>

@@ -9,6 +9,7 @@ import { Card, Chip, Typography } from "@mui/material";
 
 interface ProductListProps {
   products: Product[];
+  onCategoryClick: (category: string) => void;
 }
 
 const FlexContainer = styled("section")(() => ({
@@ -18,7 +19,10 @@ const FlexContainer = styled("section")(() => ({
   height: "100%",
 }));
 
-export const ProductList: React.FC<ProductListProps> = ({ products }) => {
+export const ProductList: React.FC<ProductListProps> = ({
+  products,
+  onCategoryClick,
+}) => {
   return (
     <FlexContainer>
       {products.map((product, index) => (
@@ -68,7 +72,13 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
             <Typography component="p" fontWeight="bold">
               {product.price}$
             </Typography>
-            <Chip label={product.category} color="primary" variant="outlined" />
+            <Chip
+              clickable
+              onClick={() => onCategoryClick(product.category)}
+              label={product.category}
+              color="primary"
+              variant="outlined"
+            />
             <Typography sx={{ overflow: "hidden" }}>
               {product.description}
             </Typography>

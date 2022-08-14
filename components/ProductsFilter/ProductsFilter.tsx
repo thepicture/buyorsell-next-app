@@ -15,12 +15,14 @@ export interface ProductsFilterProps {
   categories: string[];
   onSortChange: (sort: string) => void;
   onCategoryChange: (category: string) => void;
+  category: string;
   onSearchStringChange: (searchString: string) => void;
 }
 
 export const ProductsFilter: React.FC<ProductsFilterProps> = ({
   categories,
   onCategoryChange,
+  category,
   onSortChange,
   onSearchStringChange,
 }) => {
@@ -50,7 +52,7 @@ export const ProductsFilter: React.FC<ProductsFilterProps> = ({
             <Select
               labelId="category-select-label"
               id="category-select-label"
-              defaultValue="all"
+              value={category}
               onChange={(event) =>
                 onCategoryChange(event.target.value as string)
               }
