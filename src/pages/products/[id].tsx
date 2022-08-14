@@ -1,10 +1,13 @@
+import { useContext, useEffect, useState } from "react";
+
+import { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Image from "next/image";
 
 import styled from "@emotion/styled";
 
 import {
-  Box,
   Button,
   Card,
   Chip,
@@ -15,10 +18,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useSingleProductQuery } from "@features";
+import { Product, useSingleProductQuery } from "@features";
 import { theme } from "@styles";
-import { useRouter } from "next/router";
-import { NextPage } from "next";
+import { ShoppingCartContext } from "@contexts";
 
 const Container = styled("main")(() => ({
   padding: 16,
@@ -32,7 +34,24 @@ const Container = styled("main")(() => ({
 const ProductPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { isLoading, error, data: product } = useSingleProductQuery(id);
+  const {
+    isLoading,
+    error,
+    data: product,
+  } = useSingleProductQuery(parseInt(id as string));
+
+  const { add, remove } = useContext(ShoppingCartContext);
+  const [cart, setCart] = useState<Product[]>([]);
+
+  const isInCart = cart?.some((p) => p.id === parseInt(id as string));
+
+  useEffect(() => {
+    setCart(
+      localStorage.getItem("cart") === null
+        ? []
+        : (JSON.parse(localStorage.getItem("cart")!) as Product[])
+    );
+  }, []);
 
   return (
     <>
@@ -131,8 +150,23 @@ const ProductPage: NextPage = () => {
           )}
           <Grid container>
             <Grid item xs={12} sm={12} md={4} pr={2} pl={2}>
-              <Button fullWidth variant="contained">
-                Add to shopping cart
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                  if (isInCart) {
+                    remove(product.id);
+                    setCart((prev) => prev.filter((p) => p.id !== product.id));
+                  } else {
+                    add(product);
+                    setCart((prev) => [...prev, product]);
+                  }
+                  window.dispatchEvent(new Event("storage"));
+                }}
+                fullWidth
+                variant={isInCart ? "outlined" : "contained"}
+                sx={{ mb: 0 }}
+              >
+                {isInCart ? "Remove from cart" : "Add to cart"}
               </Button>
             </Grid>
             <Grid item xs={12} sm={12} md={4} pr={2} pl={2}>

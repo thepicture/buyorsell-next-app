@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 import { Provider } from "react-redux";
 
@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import { ThemeProvider } from "@mui/material";
 import styled from "@emotion/styled";
 
+import { getAuth } from "firebase/auth";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { store } from "@store";
@@ -16,9 +18,9 @@ import { style } from "@styles";
 import { Footer, Header } from "@components";
 import { theme } from "@styles";
 import { auth } from "@providers";
-import { NotifyContext } from "@contexts";
+import { NotifyContext, ShoppingCartContext } from "@contexts";
 import { useNotify } from "@hooks";
-import { getAuth } from "firebase/auth";
+import { Product } from "@features";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,29 @@ const Grid = styled("div")(
     minHeight: "100vh",
   })
 );
+
+const cartValue = {
+  add: (product: Product) => {
+    const cart = localStorage.getItem("cart");
+    if (!cart) {
+      localStorage.setItem("cart", JSON.stringify([product]));
+    } else {
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([...JSON.parse(localStorage.getItem("cart")!), product])
+      );
+    }
+  },
+  remove: (id: number) => {
+    const cart = localStorage.getItem("cart")!;
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(
+        (JSON.parse(cart) as Product[]).filter((product) => product.id !== id)
+      )
+    );
+  },
+};
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -61,14 +86,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <NotifyContext.Provider value={notify}>
-              <Grid isStickyHeader={router.pathname !== "/"}>
-                <NotifyBar />
-                <Header />
-                <Component {...pageProps} />
-                {<Footer />}
-              </Grid>
-            </NotifyContext.Provider>
+            <ShoppingCartContext.Provider value={cartValue}>
+              <NotifyContext.Provider value={notify}>
+                <Grid isStickyHeader={router.pathname !== "/"}>
+                  <NotifyBar />
+                  <Header />
+                  <Component {...pageProps} />
+                  {<Footer />}
+                </Grid>
+              </NotifyContext.Provider>
+            </ShoppingCartContext.Provider>
           </Provider>
         </QueryClientProvider>
       </ThemeProvider>

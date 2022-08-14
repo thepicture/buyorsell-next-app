@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -16,15 +16,18 @@ import {
 
 import ShopIcon from "@mui/icons-material/Shop";
 import MenuIcon from "@mui/icons-material/Menu";
+import CartIcon from "@mui/icons-material/ShoppingCart";
 
 import { signOut } from "firebase/auth";
 
 import { auth } from "@providers";
 import { NotifyContext } from "@contexts";
+import { Product } from "@features";
 
 export const Header = () => {
   const router = useRouter();
   const notify = useContext(NotifyContext);
+  const [cartCount, setCartCount] = useState(0);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -47,6 +50,21 @@ export const Header = () => {
       notify("Can't log out, try again");
     }
   };
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      let cart = localStorage.getItem("cart");
+      if (cart) {
+        setCartCount((JSON.parse(cart) as Product[]).length);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    handleStorageChange();
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   return (
     <AppBar position="sticky">
@@ -132,9 +150,24 @@ export const Header = () => {
             }}
           >
             {router.pathname !== "/" && (
-              <Button onClick={handleLogOut} color="inherit">
-                Log out
-              </Button>
+              <>
+                {router.pathname !== "/" && (
+                  <>
+                    <CartIcon
+                      sx={{
+                        display: { xs: "none", md: "flex" },
+                        alignSelf: "center",
+                      }}
+                    />
+                    <Typography alignSelf="center" variant="caption" mr={2}>
+                      {cartCount}
+                    </Typography>
+                  </>
+                )}
+                <Button onClick={handleLogOut} color="inherit">
+                  Log out
+                </Button>
+              </>
             )}
           </Box>
         </Toolbar>
