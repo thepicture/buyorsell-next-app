@@ -5,28 +5,33 @@ import Image from "next/image";
 import styled from "@emotion/styled";
 
 import { Product } from "@features";
-import { Card, Chip, Typography } from "@mui/material";
+import { Button, Card, Chip, Typography, useMediaQuery } from "@mui/material";
 import { useRouter } from "next/router";
+import { theme } from "@styles";
 
 interface ProductListProps {
   products: Product[];
   onCategoryClick: (category: string) => void;
 }
 
-const FlexContainer = styled("section")(() => ({
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr",
-  columnGap: 16,
-  height: "100%",
-}));
+const FlexContainer = styled("section")(
+  ({ matches }: { matches: boolean }) => ({
+    display: "grid",
+    gridTemplateColumns: matches ? "1fr" : "1fr 1fr 1fr",
+    columnGap: 16,
+    height: "100%",
+  })
+);
 
 export const ProductList: React.FC<ProductListProps> = ({
   products,
   onCategoryClick,
 }) => {
   const router = useRouter();
+  const matches = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
-    <FlexContainer>
+    <FlexContainer matches={matches}>
       {products.map((product, index) => (
         <Card
           key={product.id}
@@ -34,7 +39,6 @@ export const ProductList: React.FC<ProductListProps> = ({
           elevation={4}
           component="section"
           sx={{
-            height: "400px",
             position: "relative",
             display: "grid",
             gridTemplateRows: "1fr 1fr",
@@ -89,9 +93,12 @@ export const ProductList: React.FC<ProductListProps> = ({
               color="primary"
               variant="outlined"
             />
-            <Typography sx={{ overflow: "hidden" }}>
+            <Typography sx={{ height: "50px", overflow: "hidden" }}>
               {product.description}
             </Typography>
+            <Button fullWidth variant="contained" sx={{ mb: 0 }}>
+              Add to cart
+            </Button>
           </div>
         </Card>
       ))}
