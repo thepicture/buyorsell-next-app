@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -50,10 +50,7 @@ const IndexPage: NextPage = () => {
   };
 
   const filteredProducts = products
-    ?.filter(
-      (product) =>
-        category === "all" || category === "" || product.category === category
-    )
+    ?.filter((product) => category === "all" || product.category === category)
     .filter((product) => !title || product.title.toLowerCase().includes(title))
     .sort((first, second) =>
       sort === "asc"
@@ -64,6 +61,10 @@ const IndexPage: NextPage = () => {
         ? 1
         : -1
     );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [category, sort, title]);
 
   return (
     <>
