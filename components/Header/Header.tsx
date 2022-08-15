@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { MouseEvent, useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -75,7 +75,10 @@ export const Header = () => {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+              event.preventDefault();
+              router.push("/");
+            }}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -84,6 +87,7 @@ export const Header = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             BuyOrSell
@@ -118,9 +122,14 @@ export const Header = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {router.pathname !== "/" && (
-                <MenuItem onClick={handleLogOut}>Log out</MenuItem>
-              )}
+              {router.pathname !== "/" && [
+                <MenuItem key="logout" onClick={handleLogOut}>
+                  Log out
+                </MenuItem>,
+                <MenuItem key="cart" onClick={() => router.push("/cart")}>
+                  Cart
+                </MenuItem>,
+              ]}
             </Menu>
           </Box>
           <ShopIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -128,7 +137,10 @@ export const Header = () => {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+              event.preventDefault();
+              router.push("/");
+            }}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -138,6 +150,7 @@ export const Header = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             BuyOrSell

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
@@ -27,10 +27,10 @@ export const ProductList: React.FC<ProductListProps> = ({
   onCategoryClick,
   oneRow,
 }) => {
-  const matches = oneRow || useMediaQuery(theme.breakpoints.down("md"));
+  const matches = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <FlexContainer matches={matches}>
+    <FlexContainer matches={matches || (oneRow ?? false)}>
       {products.map((product) => (
         <ProductItem
           key={product.id}
