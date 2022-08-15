@@ -151,19 +151,16 @@ export const Header = () => {
           >
             {router.pathname !== "/" && (
               <>
-                {router.pathname !== "/" && (
-                  <>
-                    <CartIcon
-                      sx={{
-                        display: { xs: "none", md: "flex" },
-                        alignSelf: "center",
-                      }}
-                    />
-                    <Typography alignSelf="center" variant="caption" mr={2}>
-                      {cartCount}
-                    </Typography>
-                  </>
-                )}
+                <CartIcon
+                  onClick={() => router.push("/cart")}
+                  sx={{
+                    display: { xs: "none", md: "flex" },
+                    alignSelf: "center",
+                  }}
+                />
+                <Typography alignSelf="center" variant="caption" mr={2}>
+                  {cartCount}
+                </Typography>
                 <Button onClick={handleLogOut} color="inherit">
                   Log out
                 </Button>
