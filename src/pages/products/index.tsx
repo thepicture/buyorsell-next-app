@@ -22,7 +22,7 @@ const Container = styled("main")(() => ({
   },
 }));
 
-const IndexPage: NextPage = () => {
+const ProductsPage: NextPage = () => {
   const {
     isLoading: areProductsLoading,
     error: productsError,
@@ -94,4 +94,4 @@ const IndexPage: NextPage = () => {
   );
 };
 
-export default IndexPage;
+export default ProductsPage;

@@ -9,7 +9,8 @@ import { theme } from "@styles";
 
 interface ProductListProps {
   products: Product[];
-  onCategoryClick: (category: string) => void;
+  onCategoryClick?: (category: string) => void;
+  oneRow?: boolean;
 }
 
 const FlexContainer = styled("section")(
@@ -24,13 +25,18 @@ const FlexContainer = styled("section")(
 export const ProductList: React.FC<ProductListProps> = ({
   products,
   onCategoryClick,
+  oneRow,
 }) => {
-  const matches = useMediaQuery(theme.breakpoints.down("md"));
+  const matches = oneRow || useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <FlexContainer matches={matches}>
-      {products.map((product, index) => (
-        <ProductItem product={product} onCategoryClick={onCategoryClick} />
+      {products.map((product) => (
+        <ProductItem
+          key={product.id}
+          product={product}
+          onCategoryClick={onCategoryClick}
+        />
       ))}
     </FlexContainer>
   );

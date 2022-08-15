@@ -153,6 +153,7 @@ export const Header = () => {
               <>
                 <CartIcon
                   onClick={() => router.push("/cart")}
+                  cursor="pointer"
                   sx={{
                     display: { xs: "none", md: "flex" },
                     alignSelf: "center",
