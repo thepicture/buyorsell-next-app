@@ -61,7 +61,7 @@ const IndexPage: NextPage = () => {
         vantaEffect.destroy();
       }
     };
-  }, []);
+  }, [vantaEffect]);
 
   return (
     <div ref={vantaRef}>

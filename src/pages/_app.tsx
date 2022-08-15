@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { Provider } from "react-redux";
 
 import type { AppProps } from "next/app";
-import Head from "next/head";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import { ThemeProvider } from "@mui/material";
 import styled from "@emotion/styled";
@@ -17,7 +17,6 @@ import { store } from "@store";
 import { style } from "@styles";
 import { Footer, Header } from "@components";
 import { theme } from "@styles";
-import { auth } from "@providers";
 import { NotifyContext, ShoppingCartContext } from "@contexts";
 import { useNotify } from "@hooks";
 import { Product } from "@features";
@@ -73,14 +72,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         }
       }
     });
-  }, [auth]);
+  }, [router]);
 
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" />
       </Head>
       {style}
       <ThemeProvider theme={theme}>
