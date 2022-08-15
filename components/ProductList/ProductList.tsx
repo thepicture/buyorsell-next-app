@@ -66,7 +66,7 @@ export const ProductList: React.FC<ProductListProps> = ({
               },
             }}
           >
-            <div style={{ position: "relative" }}>
+            <div className="product__image-container">
               <Image
                 src={product.image}
                 alt={product.title}
@@ -74,17 +74,9 @@ export const ProductList: React.FC<ProductListProps> = ({
                 layout="fill"
                 objectFit="contain"
               />
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  opacity: ".1",
-                  background: `linear-gradient(to bottom, transparent, black)`,
-                }}
-              ></div>
+              <div className="product__image-gradient" />
             </div>
-            <div style={{ overflow: "hidden", padding: 16 }}>
+            <div className="product__details">
               <Typography
                 component="h2"
                 fontWeight="bold"
@@ -131,6 +123,26 @@ export const ProductList: React.FC<ProductListProps> = ({
                 {isInCart ? "Remove from cart" : "Add to cart"}
               </Button>
             </div>
+            <style jsx>
+              {`
+                .product__image-container {
+                  position: relative;
+                }
+
+                .product__image-gradient {
+                  position: absolute;
+                  width: 100%;
+                  height: 100%;
+                  opacity: 0.1;
+                  background: linear-gradient(to bottom, transparent, black);
+                }
+
+                .product__details {
+                  overflow: hidden;
+                  padding: 16px;
+                }
+              `}
+            </style>
           </Card>
         );
       })}

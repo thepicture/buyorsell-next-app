@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import { theme } from "@styles";
 
 export interface ProductsFilterProps {

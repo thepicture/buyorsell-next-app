@@ -77,7 +77,7 @@ const ProductPage: NextPage = () => {
           {isLoading || error ? (
             <Skeleton variant="rectangular" height="100%" sx={{ margin: 2 }} />
           ) : (
-            <div style={{ position: "relative" }}>
+            <div className="product__image-container">
               <Image
                 src={product.image}
                 alt={product.title}
@@ -85,15 +85,27 @@ const ProductPage: NextPage = () => {
                 layout="fill"
                 objectFit="contain"
               />
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  opacity: ".1",
-                  background: `linear-gradient(to bottom, transparent, black)`,
-                }}
-              ></div>
+              <div className="product__image-gradient" />
+              <style jsx>
+                {`
+                  .product__image-container {
+                    position: relative;
+                  }
+
+                  .product__image-gradient {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0.1;
+                    background: linear-gradient(to bottom, transparent, black);
+                  }
+
+                  .product__details {
+                    overflow: hidden;
+                    padding: 16px;
+                  }
+                `}
+              </style>
             </div>
           )}
 
@@ -150,24 +162,34 @@ const ProductPage: NextPage = () => {
           )}
           <Grid container>
             <Grid item xs={12} sm={12} md={4} pr={2} pl={2}>
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  if (isInCart) {
-                    remove(product.id);
-                    setCart((prev) => prev.filter((p) => p.id !== product.id));
-                  } else {
-                    add(product);
-                    setCart((prev) => [...prev, product]);
-                  }
-                  window.dispatchEvent(new Event("storage"));
-                }}
-                fullWidth
-                variant={isInCart ? "outlined" : "contained"}
-                sx={{ mb: 0 }}
-              >
-                {isInCart ? "Remove from cart" : "Add to cart"}
-              </Button>
+              {!isLoading && !error ? (
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (isInCart) {
+                      remove(product.id);
+                      setCart((prev) =>
+                        prev.filter((p) => p.id !== product.id)
+                      );
+                    } else {
+                      add(product);
+                      setCart((prev) => [...prev, product]);
+                    }
+                    window.dispatchEvent(new Event("storage"));
+                  }}
+                  fullWidth
+                  variant={isInCart ? "outlined" : "contained"}
+                  sx={{ mb: 0 }}
+                >
+                  {isInCart ? "Remove from cart" : "Add to cart"}
+                </Button>
+              ) : (
+                <Skeleton
+                  variant="rectangular"
+                  height="50%"
+                  sx={{ margin: "1em 0em 0em 0em" }}
+                />
+              )}
             </Grid>
             <Grid item xs={12} sm={12} md={4} pr={2} pl={2}>
               <Button fullWidth variant="contained">

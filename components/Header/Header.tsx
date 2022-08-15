@@ -14,15 +14,15 @@ import {
   Button,
 } from "@mui/material";
 
+import CartIcon from "@mui/icons-material/ShoppingCart";
 import ShopIcon from "@mui/icons-material/Shop";
 import MenuIcon from "@mui/icons-material/Menu";
-import CartIcon from "@mui/icons-material/ShoppingCart";
 
 import { signOut } from "firebase/auth";
 
-import { auth } from "@providers";
 import { NotifyContext } from "@contexts";
 import { Product } from "@features";
+import { auth } from "@providers";
 
 export const Header = () => {
   const router = useRouter();

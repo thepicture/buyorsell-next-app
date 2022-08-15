@@ -7,6 +7,7 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material";
 import styled from "@emotion/styled";
 
+// @ts-ignore
 import FOG from "vanta/dist/vanta.fog.min";
 
 import { AuthRegistration } from "@components";
