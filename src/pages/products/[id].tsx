@@ -199,7 +199,7 @@ const ProductPage: NextPage = () => {
             <Grid item xs={12} sm={12} md={4} pr={2} pl={2}>
               <Button
                 fullWidth
-                onClick={() => router.push("/products")}
+                onClick={() => router.back()}
                 variant="outlined"
               >
                 Back

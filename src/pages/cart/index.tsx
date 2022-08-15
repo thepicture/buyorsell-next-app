@@ -10,6 +10,8 @@ import { ProductList } from "@components";
 import { Typography } from "@mui/material";
 
 const Container = styled("main")(() => ({
+  display: "grid",
+  gridTemplateRows: "auto 1fr",
   margin: 16,
   rowGap: 16,
 }));
