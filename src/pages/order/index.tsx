@@ -34,31 +34,41 @@ const Container = styled("main")(() => ({
 }));
 
 interface CardState {
-  cardNumber: number;
-  month: number;
-  year: number;
-  cvvOrCvn: number;
+  cardNumber: string;
+  month: string;
+  year: string;
+  cvvOrCvn: string;
 }
 
 const PAYING_TIME_MILLISECONDS = 3200;
+const SEARCH_VALUE = /\D/g;
 
 const OrderPage: NextPage = () => {
   const router = useRouter();
 
   const notify = useContext(NotifyContext);
 
-  const [card, setCard] = useState<any>({});
+  const [card, setCard] = useState<CardState>({
+    cardNumber: "",
+    month: "",
+    year: "",
+    cvvOrCvn: "",
+  });
   const [isPaying, setIsPaying] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setCard((prev) => ({ ...prev, [name]: value }));
+
+    setCard((prev: CardState) => ({
+      ...prev,
+      [name]: value.replaceAll(SEARCH_VALUE, ""),
+    }));
   };
 
   const handlePay = (event: FormEvent) => {
     event.preventDefault();
 
-    if (Object.keys(card).some((key) => isNaN(parseInt(card[key])))) {
+    if (Object.keys(card).some((key) => isNaN(parseInt((card as any)[key])))) {
       notify("Check your input, you must type only digits");
     } else {
       setIsPaying(true);
@@ -86,7 +96,7 @@ const OrderPage: NextPage = () => {
               mb={2}
               ml={2}
             >
-              Don't leave the page, payment is in process...
+              Don&apos;t leave the page, payment is in process...
             </Typography>
             <CircularProgress />
           </>
@@ -114,6 +124,7 @@ const OrderPage: NextPage = () => {
                   type="tel"
                   name="cardNumber"
                   onChange={handleChange}
+                  value={card.cardNumber}
                   autoComplete="cc-number"
                   inputMode="numeric"
                   required
@@ -128,6 +139,7 @@ const OrderPage: NextPage = () => {
                       type="tel"
                       name="month"
                       onChange={handleChange}
+                      value={card["month"]}
                       inputMode="numeric"
                       required
                       placeholder="MM"
@@ -138,6 +150,7 @@ const OrderPage: NextPage = () => {
                       type="tel"
                       name="year"
                       onChange={handleChange}
+                      value={card["year"]}
                       inputMode="numeric"
                       required
                       placeholder="YY"
@@ -148,6 +161,7 @@ const OrderPage: NextPage = () => {
                     type="tel"
                     name="cvvOrCvn"
                     onChange={handleChange}
+                    value={card["cvvOrCvn"]}
                     inputMode="numeric"
                     required
                     placeholder="CVV / CVN"
