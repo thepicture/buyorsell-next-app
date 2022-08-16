@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
 
 import styled from "@emotion/styled";
 
+import { Button, Typography } from "@mui/material";
+
 import { Product } from "@features";
 import { ProductList } from "@components";
-import { Typography } from "@mui/material";
+import { theme } from "@styles";
 
 const Container = styled("main")(() => ({
   display: "grid",
@@ -17,6 +20,7 @@ const Container = styled("main")(() => ({
 }));
 
 const CartPage: NextPage = () => {
+  const router = useRouter();
   const [cart, setCart] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -55,6 +59,18 @@ const CartPage: NextPage = () => {
           Your cart contains{" "}
           {cart.length === 0 ? "nothing yet." : `${cart.length} products.`}
         </Typography>
+        <Button
+          onClick={() => router.push("/order")}
+          variant="contained"
+          sx={{
+            justifySelf: "start",
+            [theme.breakpoints.down("md")]: {
+              justifySelf: "unset",
+            },
+          }}
+        >
+          Order all
+        </Button>
         <ProductList products={cart} oneRow={true} />
       </Container>
     </>

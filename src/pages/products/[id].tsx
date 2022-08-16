@@ -192,7 +192,11 @@ const ProductPage: NextPage = () => {
               )}
             </Grid>
             <Grid item xs={12} sm={12} md={4} pr={2} pl={2}>
-              <Button fullWidth variant="contained">
+              <Button
+                onClick={() => router.push("/order")}
+                fullWidth
+                variant="contained"
+              >
                 Order
               </Button>
             </Grid>
