@@ -56,6 +56,8 @@ export const Header = () => {
       let cart = localStorage.getItem("cart");
       if (cart) {
         setCartCount((JSON.parse(cart) as Product[]).length);
+      } else {
+        setCartCount(0);
       }
     };
 

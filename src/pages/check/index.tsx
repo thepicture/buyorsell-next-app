@@ -30,12 +30,19 @@ const CheckPage: NextPage = () => {
   const router = useRouter();
 
   const [cartCount, setCartCount] = useState(0);
+  const [isCartEmpty, setIsCartEmpty] = useState(false);
 
   useEffect(() => {
+    if (isCartEmpty) {
+      return;
+    }
     const handleStorageChange = () => {
       let cart = localStorage.getItem("cart");
       if (cart) {
         setCartCount((JSON.parse(cart) as Product[]).length);
+        localStorage.removeItem("cart");
+        setIsCartEmpty(true);
+        window.dispatchEvent(new Event("storage"));
       }
     };
 
@@ -44,7 +51,7 @@ const CheckPage: NextPage = () => {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []);
+  }, [isCartEmpty]);
 
   return (
     <>
