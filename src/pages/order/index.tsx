@@ -70,6 +70,14 @@ const OrderPage: NextPage = () => {
 
     if (Object.keys(card).some((key) => isNaN(parseInt((card as any)[key])))) {
       notify("Check your input, you must type only digits");
+    } else if (card.cardNumber.length !== 16) {
+      notify("Card number must contain 16 digits");
+    } else if (parseInt(card.month) > 12 || parseInt(card.month) < 1) {
+      notify("Enter correct month");
+    } else if (parseInt(20 + card.year) < new Date().getFullYear()) {
+      notify("Year must be the current year or later");
+    } else if (card.cvvOrCvn.length !== 3) {
+      notify("CVV or CVN must be 3 digits long");
     } else {
       setIsPaying(true);
       setTimeout(() => router.push("/check"), PAYING_TIME_MILLISECONDS);
