@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -17,6 +17,7 @@ import {
 
 import { theme } from "@styles";
 import { NotifyContext } from "@contexts";
+import { Product } from "@features";
 
 const Container = styled("main")(() => ({
   display: "flex",
@@ -45,6 +46,15 @@ const SEARCH_VALUE = /\D/g;
 
 const OrderPage: NextPage = () => {
   const router = useRouter();
+  const [cart, setCart] = useState<Product[]>([]);
+
+  useEffect(() => {
+    setCart(
+      localStorage.getItem("cart") === null
+        ? []
+        : (JSON.parse(localStorage.getItem("cart")!) as Product[])
+    );
+  }, []);
 
   const notify = useContext(NotifyContext);
 
@@ -127,6 +137,21 @@ const OrderPage: NextPage = () => {
                 },
               }}
             >
+              <Typography mt={2}>
+                {cart.map((product) => (
+                  <Typography>
+                    {product.title}: {(product.price / 100).toFixed(2)}$
+                  </Typography>
+                ))}
+              </Typography>
+              <Typography fontWeight="bold">
+                TOTAL:{" "}
+                {cart
+                  .map((p) => p.price / 100)
+                  .reduce((p1, p2) => p1 + p2, 0)
+                  .toFixed(2)}
+                $
+              </Typography>
               <form onSubmit={handlePay}>
                 <TextField
                   type="tel"
